@@ -1,0 +1,25 @@
+# mongodb-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongodb-pod
+  labels:
+    app: mongodb  # Add a label
+spec:
+  containers:
+    - name: mongodb
+      image: mongo:latest   # This version includes the mongo shell
+      ports:
+        - containerPort: 27017
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: mongodb
+  type: ClusterIP

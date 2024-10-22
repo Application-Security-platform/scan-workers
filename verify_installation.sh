@@ -60,6 +60,18 @@ else
     echo "PostgreSQL is not installed."
 fi
 
+
+# Verify Go installation
+if command -v go >/dev/null 2>&1; then
+    echo "Go is installed."
+    go version
+else
+    echo "Go is not installed."
+fi
+
+
+
+
 # Verify Python
 if command -v python3 >/dev/null 2>&1; then
     echo "Python is installed:"
