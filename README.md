@@ -2,7 +2,23 @@
 - [Project Structure](#project-structure)
 
 ## Project Structure
-SCAN-WORKERS/ │ ├── mongodb/ │ ├── mongodb-setup.yaml # MongoDB pod definition │ └── mongodb-setup.sh # Script to set up MongoDB database and collections │ ├── gitleaks/ │ ├── gitleaks-pod.yaml # Gitleaks pod definition │ ├── gitleaks-run.sh # Script to run Gitleaks scanner and process the results │ ├── preprocess_and_store.py # Python script for preprocessing Gitleaks data and storing in MongoDB │ └── README.md # Gitleaks-specific instructions │ └── README.md # Root README file
+
+```bash
+project-root/
+├── mongodb/
+│   ├── mongodb-pod.yaml          # MongoDB pod definition
+│   ├── mongodb-service.yaml       # MongoDB service definition
+│   └── mongodb-setup.sh           # Script to set up MongoDB database and collections
+│
+├── scanners/
+│   ├── gitleaks # gitleaks scanner    
+│       ├── gitleaks-pod.yaml          # Gitleaks pod definition
+│       ├── gitleaks-run.sh            # Script to run Gitleaks scanner and process the results
+│       ├── preprocess_and_store.py    # Python script for preprocessing Gitleaks data and storing in 
+│       └── README.md                  # Gitleaks-specific instructions
+│
+└── README.md                      # Root README file
+```
 
 ## Setup Instructions
 
