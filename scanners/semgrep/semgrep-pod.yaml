@@ -1,0 +1,25 @@
+# semgrep-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: semgrep-pod
+spec:
+  containers:
+    - name: semgrep
+      image: returntocorp/semgrep:latest  # Use the official Semgrep Docker image
+      command: ["/bin/sh", "-c"]
+      args:
+        - semgrep --config=auto --json --output /mnt/data/repo/$ORG_ID/results/$REPO_NAME/semgrep-result.json /mnt/data/repo/$ORG_ID/$REPO_NAME;
+      env:
+        - name: REPO_NAME
+          value: "test_keys"  # You can update this dynamically later
+        - name: ORG_ID
+          value: "1611"  # You can update this dynamically later
+      volumeMounts:
+        - mountPath: /mnt/data/repo
+          name: repo-storage
+  volumes:
+    - name: repo-storage
+      persistentVolumeClaim:
+        claimName: repo-pvc
+  restartPolicy: Never

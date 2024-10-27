@@ -11,26 +11,21 @@ spec:
     # fsGroup: 1000
   containers:
     - name: gitleaks
-      image: python:3.12-slim  # Use Python image
+      image: zricethezav/gitleaks:latest
       command: ["/bin/sh", "-c"]
       args:
-        - |
-          apt-get update && apt-get install -y git wget tar dnsutils 
-          pip install pymongo
-          wget https://github.com/gitleaks/gitleaks/releases/download/v8.21.1/gitleaks_8.21.1_linux_x64.tar.gz
-          tar -xvzf gitleaks_8.21.1_linux_x64.tar.gz
-          rm gitleaks_8.21.1_linux_x64.tar.gz
-          mv gitleaks /usr/bin/gitleaks
-          git config --global --add safe.directory /data/repo
-          while true; do sleep 30; done
+        - gitleaks detect --source=/mnt/data/repo/$ORG_ID/$REPO_NAME --report-format=json --report-path=/mnt/data/repo/$ORG_ID/results/$REPO_NAME/gitleaks_result.json; exit 0;
       volumeMounts:
         - name: repo-storage
           mountPath: /mnt/data/repo
       env:
-        - name: MONGODB_URI
-          value: "mongodb://mongodb-service:27017"
+        - name: REPO_NAME
+          value: "test_keys"  # You can update this dynamically later
+        - name: ORG_ID
+          value: "1611"  # You can update this dynamically later
+
   volumes:
     - name: repo-storage
       persistentVolumeClaim:
         claimName: repo-pvc
-  restartPolicy: OnFailure
+  restartPolicy: Never

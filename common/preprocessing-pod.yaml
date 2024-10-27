@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: preprocessing-pod
+spec:
+  containers:
+    - name: preprocessing
+      image: python:3.12-slim
+      command: ["/bin/sh", "-c"]
+      args:
+        - pip install pymongo && ls repo && python3 scripts/store_data.py;
+      env:
+        - name: REPO_NAME
+          value: "test_keys"  # Dynamically pass the repo name
+        - name: ORG_ID
+          value: "1611"  # Dynamically pass the repo name
+      volumeMounts:
+        - mountPath: /mnt/data/repo
+          name: repo-storage
+        - mountPath: /mnt/data/scripts
+          name: script-storage
+      workingDir: /mnt/data/  # Set working directory to the shared volume
+  volumes:
+    - name: script-storage
+      configMap:
+        name: preprocess-scripts
+    - name: repo-storage
+      persistentVolumeClaim:
+        claimName: repo-pvc
+  restartPolicy: Never
