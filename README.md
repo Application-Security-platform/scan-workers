@@ -16,6 +16,11 @@ project-root/
 │       ├── gitleaks-run.sh            # Script to run Gitleaks scanner and process the results
 │       ├── preprocess_and_store.py    # Python script for preprocessing Gitleaks data and storing in 
 │       └── README.md                  # Gitleaks-specific instructions
+│   ├── trufflehog # gitleaks scanner    
+│       ├── trufflehog-pod.yaml          # trufflehog pod definition
+│       ├── trufflehog-run.sh            # Script to run trufflehog scanner and process the results
+│       ├── preprocess_and_store.py    # Python script for preprocessing trufflehog data and storing in 
+│       └── README.md                  # trufflehog-specific instructions
 │
 └── README.md                      # Root README file
 ```
