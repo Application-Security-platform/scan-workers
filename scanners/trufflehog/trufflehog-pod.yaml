@@ -1,26 +1,22 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: gitleaks-pod
+  name: trufflehog-pod
   labels:
-    app: gitleaks
+    app: trufflehog
 spec:
   securityContext:
     runAsUser: 0
     runAsGroup: 0
     # fsGroup: 1000
   containers:
-    - name: gitleaks
+    - name: trufflehog
       image: python:3.12-slim  # Use Python image
       command: ["/bin/sh", "-c"]
       args:
         - |
-          apt-get update && apt-get install -y git wget tar dnsutils 
-          pip install pymongo
-          wget https://github.com/gitleaks/gitleaks/releases/download/v8.21.1/gitleaks_8.21.1_linux_x64.tar.gz
-          tar -xvzf gitleaks_8.21.1_linux_x64.tar.gz
-          rm gitleaks_8.21.1_linux_x64.tar.gz
-          mv gitleaks /usr/bin/gitleaks
+          apt-get update && apt-get install -y git curl tar dnsutils 
+          curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin
           git config --global --add safe.directory /data/repo
           while true; do sleep 30; done
       volumeMounts:
@@ -33,4 +29,3 @@ spec:
     - name: repo-storage
       persistentVolumeClaim:
         claimName: repo-pvc
-  restartPolicy: OnFailure
