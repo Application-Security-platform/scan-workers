@@ -1,0 +1,31 @@
+# repo-clone-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: repo-clone-pod
+spec:
+  containers:
+    - name: repo-cloner
+      image: alpine/git
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          REPO_NAME=$(basename -s .git "$REPO_URL");
+          STORAGE_PATH="/mnt/data/repo/$ORG_ID/$REPO_NAME";
+          if [ -d '$STORAGE_PATH' ]; then rm -rf '$STORAGE_PATH'/*; fi
+          mkdir -p "$STORAGE_PATH" && \
+          git clone "$REPO_URL" "$STORAGE_PATH" && \
+          sleep 3600;
+      env:
+        - name: REPO_URL
+          value: "https://github.com/trufflesecurity/test_keys.git"  # Default value, can be overwritten
+        - name: ORG_ID
+          value: "1611"  # Default value, can be overwritten
+      volumeMounts:
+        - mountPath: /mnt/data/repo
+          name: repo-storage
+  volumes:
+    - name: repo-storage
+      persistentVolumeClaim:
+        claimName: repo-pvc
+  restartPolicy: Never
