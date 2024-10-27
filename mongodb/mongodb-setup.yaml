@@ -1,17 +1,53 @@
-# mongodb-pod.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongodb-pv
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/mongodb # The path on the Minikube node where data will be stored
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
 apiVersion: v1
 kind: Pod
 metadata:
   name: mongodb-pod
   labels:
-    app: mongodb  # Add a label
+    app: mongodb
 spec:
   containers:
     - name: mongodb
       image: mongo:latest   # This version includes the mongo shell
       ports:
         - containerPort: 27017
+      volumeMounts:
+        - name: mongodb-storage
+          mountPath: /data/db # The default MongoDB data directory
+  volumes:
+    - name: mongodb-storage
+      persistentVolumeClaim:
+        claimName: mongodb-pvc
   restartPolicy: Always
+
 ---
 apiVersion: v1
 kind: Service
