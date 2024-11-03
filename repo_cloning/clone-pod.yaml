@@ -1,4 +1,3 @@
-# repo-clone-pod.yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -10,17 +9,30 @@ spec:
       command: ["/bin/sh", "-c"]
       args:
         - |
-          REPO_NAME=$(basename -s .git "$REPO_URL");
-          STORAGE_PATH="/mnt/data/repo/$ORG_ID/$REPO_NAME";
-          if [ -d '$STORAGE_PATH' ]; then rm -rf '$STORAGE_PATH'/*; fi
-          mkdir -p "$STORAGE_PATH" && \
-          git clone "$REPO_URL" "$STORAGE_PATH" && \
-          sleep 3600;
+          set -e
+          REPO_NAME=$(basename -s .git "$REPO_URL")
+          STORAGE_PATH="/mnt/data/repo/$ORG_ID/$REPO_NAME"
+          
+          # Create parent directory if it doesn't exist
+          mkdir -p "/mnt/data/repo/$ORG_ID"
+          
+          # Remove directory if it exists (force removal)
+          if [ -d "$STORAGE_PATH" ]; then
+            rm -rf "$STORAGE_PATH"
+          fi
+          
+          # Clone the repository
+          echo "Cloning repository to $STORAGE_PATH..."
+          git clone "$REPO_URL" "$STORAGE_PATH"
+          
+          # Keep container running for debugging
+          echo "Clone completed successfully. Keeping container alive..."
+          sleep 3600
       env:
         - name: REPO_URL
-          value: "https://github.com/trufflesecurity/test_keys.git"  # Default value, can be overwritten
+          value: "https://github.com/trufflesecurity/test_keys.git"
         - name: ORG_ID
-          value: "1611"  # Default value, can be overwritten
+          value: "1611"
       volumeMounts:
         - mountPath: /mnt/data/repo
           name: repo-storage

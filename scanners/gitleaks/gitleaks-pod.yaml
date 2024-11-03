@@ -14,7 +14,7 @@ spec:
       image: zricethezav/gitleaks:latest
       command: ["/bin/sh", "-c"]
       args:
-        - gitleaks detect --source=/mnt/data/repo/$ORG_ID/$REPO_NAME --report-format=json --report-path=/mnt/data/repo/$ORG_ID/results/$REPO_NAME/gitleaks_result.json; exit 0;
+        - gitleaks detect --source=/mnt/data/repo/$ORG_ID/$REPO_NAME --report-format=json --report-path=/mnt/data/repo/$ORG_ID/results/$REPO_NAME/gitleaks_result.json --exit-code=0;
       volumeMounts:
         - name: repo-storage
           mountPath: /mnt/data/repo

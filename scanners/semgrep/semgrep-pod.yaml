@@ -9,7 +9,7 @@ spec:
       image: returntocorp/semgrep:latest  # Use the official Semgrep Docker image
       command: ["/bin/sh", "-c"]
       args:
-        - semgrep --config=auto --json --output /mnt/data/repo/$ORG_ID/results/$REPO_NAME/semgrep-result.json /mnt/data/repo/$ORG_ID/$REPO_NAME;
+        - semgrep --config=auto --json --output /mnt/data/repo/$ORG_ID/results/$REPO_NAME/semgrep_result.json /mnt/data/repo/$ORG_ID/$REPO_NAME;
       env:
         - name: REPO_NAME
           value: "test_keys"  # You can update this dynamically later

@@ -14,7 +14,7 @@ spec:
       image: trufflesecurity/trufflehog:latest
       command: ["/bin/sh", "-c"]
       args:
-        - trufflehog filesystem /mnt/data/repo/$ORG_ID/$REPO_NAME --only-verified --no-update --json > /mnt/data/repo/$ORG_ID/results/$REPO_NAME/trufflehog-result.json;
+        - trufflehog filesystem /mnt/data/repo/$ORG_ID/$REPO_NAME --only-verified --no-update --json > /mnt/data/repo/$ORG_ID/results/$REPO_NAME/trufflehog_result.json;
       volumeMounts:
         - name: repo-storage
           mountPath: /mnt/data/repo

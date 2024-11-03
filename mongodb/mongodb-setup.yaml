@@ -42,10 +42,15 @@ spec:
       volumeMounts:
         - name: mongodb-storage
           mountPath: /data/db # The default MongoDB data directory
+        - mountPath: /mnt/data/repo
+          name: repo-storage
   volumes:
     - name: mongodb-storage
       persistentVolumeClaim:
         claimName: mongodb-pvc
+    - name: repo-storage
+      persistentVolumeClaim:
+        claimName: repo-pvc
   restartPolicy: Always
 
 ---
