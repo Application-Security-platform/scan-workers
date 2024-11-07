@@ -16,6 +16,7 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+test_keys/
 .venv/
 
 # Go workspace file
@@ -24,3 +25,6 @@ go.work.sum
 
 # env file
 .env
+
+# zip files
+*.tar.gz
